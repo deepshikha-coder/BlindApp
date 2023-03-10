@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <TableRow>
+        <TextView
+            android:layout_column="1"
+            android:text="Phone"
+            app:cardBackgroundColor="@color/teal_200" />
+        <TextView
+            android:layout_column="2"
+            android:text="Notes"
+            app:cardBackgroundColor="@color/teal_200" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:layout_column="1"
+            android:text="Phone"
+            app:cardBackgroundColor="@color/teal_200" />
+
+        <TextView
+            android:layout_column="2"
+            android:text="Notes"
+            app:cardBackgroundColor="@color/teal_200" />
+    </TableRow>
+
+
+    </TableLayout>
