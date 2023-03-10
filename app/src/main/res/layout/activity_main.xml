@@ -4,30 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="fill_vertical"
     tools:context=".MainActivity">
-    <TableRow>
+
+    <TableRow
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:background="@color/RowColor">
+
         <TextView
-            android:layout_column="1"
-            android:text="Phone"
-            app:cardBackgroundColor="@color/teal_200" />
+            android:text="Message"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:background="@color/CardColor"
+            android:clickable="true"/>
+
         <TextView
-            android:layout_column="2"
-            android:text="Notes"
-            app:cardBackgroundColor="@color/teal_200" />
+            android:gravity="center"
+            android:text="Call"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:background="@color/CardColor"
+            android:clickable="true"/>
+
     </TableRow>
 
-    <TableRow>
+    <TableRow
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:background="@color/RowColor">
 
         <TextView
-            android:layout_column="1"
-            android:text="Phone"
-            app:cardBackgroundColor="@color/teal_200" />
-
-        <TextView
-            android:layout_column="2"
             android:text="Notes"
-            app:cardBackgroundColor="@color/teal_200" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:background="@color/CardColor"
+            android:clickable="true"
+            />
+
+        <TextView
+            android:text="Battery"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:background="@color/CardColor"
+            android:clickable="true"/>
+
     </TableRow>
 
 
-    </TableLayout>
+</TableLayout>
