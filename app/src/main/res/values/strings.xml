@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">finalYearProject</string>
+    <string name="message_layout">Message Layout</string>
 </resources>
