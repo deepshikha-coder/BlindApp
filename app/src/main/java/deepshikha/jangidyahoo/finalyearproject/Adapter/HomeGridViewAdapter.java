@@ -111,7 +111,8 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> impleme
     @Override
     public void onInit(int i) {
         int result = textToSpeech.setLanguage(Locale.getDefault());
-
+        String introText = "Welcome to voice assistant app. Click on the different sides of screen to know details" ;
+        speakOut(introText);
         if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
             Log.e("MyAdapter", "Language not supported");
         } else {

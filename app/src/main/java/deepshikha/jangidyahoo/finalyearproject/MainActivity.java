@@ -27,9 +27,8 @@ import java.util.Locale;
 import deepshikha.jangidyahoo.finalyearproject.Adapter.HomeGridViewAdapter;
 import deepshikha.jangidyahoo.finalyearproject.model.HomeGridViewModel;
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener  {
-    TextToSpeech textToSpeech;
-    AudioManager audioManager;
+public class MainActivity extends AppCompatActivity {
+
     GridView homeGV;
 
 
@@ -48,43 +47,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         HomeGridViewAdapter adapter = new HomeGridViewAdapter(this, ModelArrayList);
         homeGV.setAdapter(adapter);
 
-        // Introductory Text
-        textToSpeech = new TextToSpeech(this,this);
-        AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                .setLegacyStreamType(AudioManager.STREAM_MUSIC)
-                .build();
-        textToSpeech.setAudioAttributes(audioAttributes);
-        textToSpeech.stop();
-        audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
-    }
-
-    @Override
-    public void onInit(int status) {
-        if (status == TextToSpeech.SUCCESS) {
-
-            int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
-            // Text-to-speech is ready to use
-            String introText = "Welcome to voice assistant app. Click on the different sides of screen to know details" ;
-            speakOut(introText);
-
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        // Don't forget to shutdown!
-        if (textToSpeech != null) {
-            textToSpeech.stop();
-            textToSpeech.shutdown();
-        }
-        super.onDestroy();
-    }
-    private void speakOut(String text) {
-        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 
 }

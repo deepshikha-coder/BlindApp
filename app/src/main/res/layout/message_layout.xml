@@ -14,9 +14,6 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/MessageTabLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/DividerColor"
-
-            />
+            android:layout_height="wrap_content"/>
     </androidx.viewpager.widget.ViewPager>
 </androidx.constraintlayout.widget.ConstraintLayout>
