@@ -8,8 +8,10 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
+import android.os.BatteryManager;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +30,16 @@ import androidx.cardview.widget.CardView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import deepshikha.jangidyahoo.finalyearproject.MainActivity;
 import deepshikha.jangidyahoo.finalyearproject.R;
 import deepshikha.jangidyahoo.finalyearproject.model.HomeGridViewModel;
 
 public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> implements TextToSpeech.OnInitListener {
     TextToSpeech textToSpeech;
     AudioManager audioManager;
+    private String previousCLick = "";
+
+
     public HomeGridViewAdapter(@NonNull Context context, ArrayList<HomeGridViewModel> courseModelArrayList) {
         super(context, 0, courseModelArrayList);
         textToSpeech = new TextToSpeech(context, this);
@@ -43,13 +50,16 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> impleme
                 .build();
         textToSpeech.setAudioAttributes(audioAttributes);
         audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+
+
+
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        final String[] PreviousClick = {""};
+
         View listitemView = convertView;
         if (listitemView == null) {
             // Layout Inflater inflates each item to be displayed in GridView.
@@ -75,15 +85,18 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> impleme
             public void onClick(View view) {
                 // Perform the action when the CardView is clicked
                 String contentDescription = cardView.getContentDescription().toString();
-                if (!PreviousClick[0].equals(contentDescription)){
+                if (!previousCLick.equals(contentDescription)){
                     String textToSpeak = "You Clicked  " + contentDescription + "  Click again to confirm ";
-                    textToSpeech.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null);
-                    PreviousClick[0] = contentDescription;
+                    speakOut(textToSpeak);
+                    previousCLick = contentDescription;
 
                 }else{
-                    Intent intent = new Intent().setClassName(getContext(),contentDescription+cardView.getContentDescription().toString());
-                    getContext().startActivity(intent);
-
+                    if(contentDescription == "Battery"){
+                        getBatteryInformation();
+                    }else {
+                        Intent intent = new Intent().setClassName(getContext(), "deepshikha.jangidyahoo.finalyearproject." + contentDescription );
+                        getContext().startActivity(intent);
+                    }
                 }
 
 
@@ -98,10 +111,33 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> impleme
     @Override
     public void onInit(int i) {
         int result = textToSpeech.setLanguage(Locale.getDefault());
+
         if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
             Log.e("MyAdapter", "Language not supported");
         } else {
             Log.e("MyAdapter", "Initialization failed");
         }
+    }
+    private void speakOut(String text) {
+        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+    private void getBatteryInformation() {
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = getContext().registerReceiver(null, ifilter);
+
+        // Battery level
+        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        float batteryPercentage = (level / (float) scale) * 100;
+
+        // Battery status
+        int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+        boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING
+                || status == BatteryManager.BATTERY_STATUS_FULL;
+
+        // Display the battery information
+        String message = "Battery Level: " + batteryPercentage + "%";
+        message += "\nCharging: " + (isCharging ? "Yes" : "No");
+        speakOut(message);
     }
 }

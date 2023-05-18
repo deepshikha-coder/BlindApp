@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -29,12 +31,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     TextToSpeech textToSpeech;
     AudioManager audioManager;
     GridView homeGV;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
-
         // Adding Grid Elements
         homeGV = findViewById(R.id.homeGridView);
         ArrayList<HomeGridViewModel> ModelArrayList = new ArrayList<HomeGridViewModel>();
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 .setLegacyStreamType(AudioManager.STREAM_MUSIC)
                 .build();
         textToSpeech.setAudioAttributes(audioAttributes);
+        textToSpeech.stop();
         audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
     }
@@ -65,8 +69,22 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
             // Text-to-speech is ready to use
             String introText = "Welcome to voice assistant app. Click on the different sides of screen to know details" ;
-            textToSpeech.speak(introText, TextToSpeech.QUEUE_FLUSH, null);
+            speakOut(introText);
 
         }
     }
+
+    @Override
+    public void onDestroy() {
+        // Don't forget to shutdown!
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
+    }
+    private void speakOut(String text) {
+        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
 }
