@@ -50,7 +50,8 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> impleme
                 .build();
         textToSpeech.setAudioAttributes(audioAttributes);
         audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
 
 
     }
@@ -96,6 +97,7 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> impleme
                     }else {
                         Intent intent = new Intent().setClassName(getContext(), "deepshikha.jangidyahoo.finalyearproject." + contentDescription );
                         getContext().startActivity(intent);
+                        previousCLick = "";
                     }
                 }
 
@@ -136,7 +138,7 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> impleme
         boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING
                 || status == BatteryManager.BATTERY_STATUS_FULL;
 
-        // Display the battery information
+        // speak the battery information
         String message = "Battery Level: " + batteryPercentage + "%";
         message += "\nCharging: " + (isCharging ? "Yes" : "No");
         speakOut(message);

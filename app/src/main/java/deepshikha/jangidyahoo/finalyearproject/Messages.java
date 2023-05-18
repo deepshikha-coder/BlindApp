@@ -23,8 +23,8 @@ public class Messages extends AppCompatActivity {
         MessageTabLayout = findViewById(R.id.MessageTabLayout);
         MessageViewPager= findViewById(R.id.MessagesPager);
 
-        MessageTabLayout.addTab(MessageTabLayout.newTab().setText("Inbox"));
-        MessageTabLayout.addTab(MessageTabLayout.newTab().setText("Sent"));
+        MessageTabLayout.addTab(MessageTabLayout.newTab().setText("INBOX"));
+        MessageTabLayout.addTab(MessageTabLayout.newTab().setText("SENT"));
         MessageTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         MessageTabLayout.setBackgroundColor(Color.GRAY);
         MessageTabLayout.setTabTextColors(Color.RED, Color.BLACK);
