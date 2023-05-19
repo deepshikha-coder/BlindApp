@@ -6,9 +6,12 @@ import static android.content.ContentValues.TAG;
 import static androidx.core.content.ContextCompat.getSystemService;
 import static androidx.core.content.ContextCompat.startActivity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.os.BatteryManager;
@@ -26,6 +29,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -38,6 +43,9 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> impleme
     TextToSpeech textToSpeech;
     AudioManager audioManager;
     private String previousCLick = "";
+    private static final int PERMISSION_REQUEST_CODE = 323;
+
+    Context context;
 
 
     public HomeGridViewAdapter(@NonNull Context context, ArrayList<HomeGridViewModel> courseModelArrayList) {
@@ -50,7 +58,9 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> impleme
                 .build();
         textToSpeech.setAudioAttributes(audioAttributes);
         audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
+        this.context = context;
 
 
     }
@@ -91,11 +101,21 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> impleme
                     previousCLick = contentDescription;
 
                 }else{
+
                     if(contentDescription == "Battery"){
                         getBatteryInformation();
                     }else {
-                        Intent intent = new Intent().setClassName(getContext(), "deepshikha.jangidyahoo.finalyearproject." + contentDescription );
-                        getContext().startActivity(intent);
+
+                        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+                            // Permission has not been granted, so request it
+                            speakOut("First Grant All Permission");
+                            ((Activity) context).requestPermissions(new String[]{Manifest.permission.READ_SMS}, PERMISSION_REQUEST_CODE);
+                        } else {
+                            Intent intent = new Intent().setClassName(getContext(), "deepshikha.jangidyahoo.finalyearproject." + contentDescription );
+                            getContext().startActivity(intent);
+                            previousCLick = "";
+                        }
+
                     }
                 }
 
@@ -136,9 +156,11 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> impleme
         boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING
                 || status == BatteryManager.BATTERY_STATUS_FULL;
 
-        // Display the battery information
+        // speak the battery information
         String message = "Battery Level: " + batteryPercentage + "%";
         message += "\nCharging: " + (isCharging ? "Yes" : "No");
         speakOut(message);
     }
+
+
 }

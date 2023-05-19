@@ -14,6 +14,7 @@ import deepshikha.jangidyahoo.finalyearproject.Adapter.MessageViewPagerAdapter;
 public class Messages extends AppCompatActivity {
     TabLayout MessageTabLayout;
     ViewPager MessageViewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +27,7 @@ public class Messages extends AppCompatActivity {
         MessageTabLayout.addTab(MessageTabLayout.newTab().setText("Inbox"));
         MessageTabLayout.addTab(MessageTabLayout.newTab().setText("Sent"));
         MessageTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        MessageTabLayout.setBackgroundColor(Color.GRAY);
-        MessageTabLayout.setTabTextColors(Color.RED, Color.BLACK);
+        MessageTabLayout.setTabTextColors(Color.BLACK, Color.RED);
 
         final MessageViewPagerAdapter adapter = new MessageViewPagerAdapter(this,getSupportFragmentManager(), MessageTabLayout.getTabCount());
         MessageViewPager.setAdapter(adapter);
@@ -47,5 +47,7 @@ public class Messages extends AppCompatActivity {
 
             }
         });
+
+
     }
 }
