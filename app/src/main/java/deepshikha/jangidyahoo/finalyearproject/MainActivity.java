@@ -3,7 +3,9 @@ package deepshikha.jangidyahoo.finalyearproject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.hardware.Sensor;
@@ -30,13 +32,14 @@ import deepshikha.jangidyahoo.finalyearproject.model.HomeGridViewModel;
 public class MainActivity extends AppCompatActivity {
 
     GridView homeGV;
-
+    final int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{"android.permission.READ_SMS"}, REQUEST_CODE_ASK_PERMISSIONS);
         // Adding Grid Elements
         homeGV = findViewById(R.id.homeGridView);
         ArrayList<HomeGridViewModel> ModelArrayList = new ArrayList<HomeGridViewModel>();
@@ -46,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
         ModelArrayList.add(new HomeGridViewModel("Battery", R.drawable.ic_baseline_battery_charging_full_24));
         HomeGridViewAdapter adapter = new HomeGridViewAdapter(this, ModelArrayList);
         homeGV.setAdapter(adapter);
-
-
     }
 
 }
