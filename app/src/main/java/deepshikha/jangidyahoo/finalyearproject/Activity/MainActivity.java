@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
-        ActivityCompat.requestPermissions(MainActivity.this, new String[]{"android.permission.CALL_PHONE" ,"android.permission.READ_SMS","android.permission.READ_CALL_LOG" , "android.permission.BATTERY_STATS", "android.permission.READ_CONTACTS"}, REQUEST_CODE_ASK_PERMISSIONS);
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{"android.permission.INTERNET","android.permission.RECORD_AUDIO","android.permission.CALL_PHONE" ,"android.permission.READ_SMS","android.permission.READ_CALL_LOG" , "android.permission.BATTERY_STATS", "android.permission.READ_CONTACTS"}, REQUEST_CODE_ASK_PERMISSIONS);
         // Adding Grid Elements
         homeGV = findViewById(R.id.homeGridView);
         ArrayList<HomeGridViewModel> ModelArrayList = new ArrayList<HomeGridViewModel>();
