@@ -40,6 +40,7 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> impleme
     private String previousCLick = "";
 
 
+
     public HomeGridViewAdapter(@NonNull Context context, ArrayList<HomeGridViewModel> courseModelArrayList) {
         super(context, 0, courseModelArrayList);
         textToSpeech = new TextToSpeech(context, this);
@@ -98,10 +99,6 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel> impleme
                         getContext().startActivity(intent);
                     }
                 }
-
-
-
-
             }
         });
 
