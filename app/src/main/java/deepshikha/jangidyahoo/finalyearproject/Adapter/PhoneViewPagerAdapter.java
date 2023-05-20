@@ -6,31 +6,31 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import deepshikha.jangidyahoo.finalyearproject.MessageInboxFragment;
-import deepshikha.jangidyahoo.finalyearproject.SentMessagesFragment;
-import deepshikha.jangidyahoo.finalyearproject.call_logFragment;
-import deepshikha.jangidyahoo.finalyearproject.dialer_fragment;
+import deepshikha.jangidyahoo.finalyearproject.Fragment.CallLogFragment;
+import deepshikha.jangidyahoo.finalyearproject.Fragment.DialerFragment;
 
 public class PhoneViewPagerAdapter extends FragmentPagerAdapter {
 
     private Context myContext;
     int totalTabs;
-
+    private String[] tabTitles = new String[]{"DIALER", "CALL LOGS"};
     public PhoneViewPagerAdapter(Context context, FragmentManager fm, int totalTabs) {
         super(fm);
         myContext = context;
         this.totalTabs = totalTabs;
     }
-
+    public CharSequence getPageTitle(int position) {
+        return tabTitles[position];
+    }
     // this is for fragment tabs
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                dialer_fragment dialer_fragment = new dialer_fragment();
+                DialerFragment dialer_fragment = new DialerFragment();
                 return dialer_fragment;
             case 1:
-                call_logFragment CallLogFragment = new call_logFragment();
+                CallLogFragment CallLogFragment = new CallLogFragment();
                 return CallLogFragment;
 
             default:

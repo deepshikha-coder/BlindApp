@@ -1,9 +1,12 @@
-package deepshikha.jangidyahoo.finalyearproject;
+package deepshikha.jangidyahoo.finalyearproject.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.ContactsContract;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +30,17 @@ import java.util.List;
 import java.util.Locale;
 
 import deepshikha.jangidyahoo.finalyearproject.Adapter.RV_InboxAdapter;
+import deepshikha.jangidyahoo.finalyearproject.R;
 import deepshikha.jangidyahoo.finalyearproject.model.messageModel;
 
 
-public class SentMessagesFragment extends Fragment {
+public class SentMessagesFragment extends Fragment implements TextToSpeech.OnInitListener {
     private RV_InboxAdapter adapter;
     private List<messageModel> sentItemList;
     private static final int REQUEST_CODE_SMS_PERMISSION = 323;
+    TextToSpeech textToSpeech;
+    AudioManager audioManager;
+    private int previousClickPosition;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,10 +60,38 @@ public class SentMessagesFragment extends Fragment {
             getSentMessages();
 
         }
-        // Retrieve phone messages
-        adapter = new RV_InboxAdapter(sentItemList);
-        recyclerView.setAdapter(adapter);
 
+        textToSpeech = new TextToSpeech(getContext(), this);
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                .setLegacyStreamType(AudioManager.STREAM_MUSIC)
+                .build();
+        textToSpeech.setAudioAttributes(audioAttributes);
+        audioManager = (AudioManager)getContext().getSystemService(Context.AUDIO_SERVICE);
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
+
+        // Retrieve phone messages
+        adapter = new RV_InboxAdapter(getContext(),"SentMessageFragment" , sentItemList);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnClickListener(new RV_InboxAdapter.OnClickListener() {
+            @Override
+            public void onClick(int position, messageModel model) {
+                if (previousClickPosition == position){
+                    String textToSpeak = model.getContent();
+                    speakOut(textToSpeak);
+
+
+                }else{
+                    String confirmationSpeech  = "You clicked message from " + model.getSender() +" at " + model.getTime() + "on" + model.getDate();
+                    speakOut(confirmationSpeech + ".   click again on message to read");
+                    previousClickPosition = position;
+
+                }
+            }
+
+        });
         return view;
 
     }
@@ -106,7 +142,7 @@ public class SentMessagesFragment extends Fragment {
         }
     }
 
-    private String getContactNameFromNumber(String phoneNumber) {
+    public String getContactNameFromNumber(String phoneNumber) {
         ContentResolver contentResolver = getActivity().getContentResolver();
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
         Cursor cursor = contentResolver.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
@@ -118,5 +154,18 @@ public class SentMessagesFragment extends Fragment {
         }
 
         return null;
+    }
+
+    @Override
+    public void onInit(int i) {
+        int result = textToSpeech.setLanguage(Locale.getDefault());
+        if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+            Log.e("MyAdapter", "Language not supported");
+        } else {
+            Log.e("MyAdapter", "Initialization failed");
+        }
+    }
+    private void speakOut(String text) {
+        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 }

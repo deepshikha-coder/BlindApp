@@ -1,4 +1,4 @@
-package deepshikha.jangidyahoo.finalyearproject;
+package deepshikha.jangidyahoo.finalyearproject.Fragment;
 
 import android.Manifest;
 import android.app.Activity;
@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 import deepshikha.jangidyahoo.finalyearproject.Adapter.RV_InboxAdapter;
+import deepshikha.jangidyahoo.finalyearproject.R;
 import deepshikha.jangidyahoo.finalyearproject.model.messageModel;
 
 
@@ -78,7 +80,7 @@ public class InboxMessageFragment extends Fragment implements TextToSpeech.OnIni
 
 
 
-        adapter = new RV_InboxAdapter(messageList);
+        adapter = new RV_InboxAdapter(getContext(),"InboxMessageFragment",messageList);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnClickListener(new RV_InboxAdapter.OnClickListener() {
@@ -87,12 +89,12 @@ public class InboxMessageFragment extends Fragment implements TextToSpeech.OnIni
                 if (previousClickPosition == position){
                     String textToSpeak = model.getContent();
                     speakOut(textToSpeak);
-                    previousClickPosition = position;
+
 
                 }else{
                     String confirmationSpeech  = "You clicked message from " + model.getSender() +" at " + model.getTime() + "on" + model.getDate();
-                    speakOut(confirmationSpeech);
-                       speakOut("click again on message to read");
+                    speakOut(confirmationSpeech + ".   click again on message to read");
+                    previousClickPosition = position;
 
                     }
                 }
@@ -151,8 +153,8 @@ public class InboxMessageFragment extends Fragment implements TextToSpeech.OnIni
     @Override
     public void onInit(int i) {
         int result = textToSpeech.setLanguage(Locale.getDefault());
-        String introText = "You are at message inbox" + "swipe left for sent messages" ;
-        speakOut(introText);
+        String SentIntroText = "You are at Inbox messages. swipe Left for sent messages";
+        speakOut(SentIntroText);
         if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
             Log.e("MyAdapter", "Language not supported");
         } else {

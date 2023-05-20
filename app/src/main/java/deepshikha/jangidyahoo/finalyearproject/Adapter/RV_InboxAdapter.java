@@ -1,10 +1,18 @@
 package deepshikha.jangidyahoo.finalyearproject.Adapter;
 
+import static java.security.AccessController.getContext;
+
 import android.Manifest;
 import android.app.Activity;
+import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +24,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.Time;
 import java.util.List;
+import java.util.Locale;
 
 import deepshikha.jangidyahoo.finalyearproject.R;
 import deepshikha.jangidyahoo.finalyearproject.model.messageModel;
 
 public class RV_InboxAdapter extends RecyclerView.Adapter<RV_InboxAdapter.ViewHolder> {
     private List<messageModel> messageList;
+    private String className;
+
+
     private OnClickListener onClickListener;
-    public RV_InboxAdapter(List<messageModel> messageList) {
+    public RV_InboxAdapter(Context context, String className, List<messageModel> messageList) {
         this.messageList = messageList;
+        this.className = className;
+
     }
 
     @NonNull
@@ -33,6 +47,8 @@ public class RV_InboxAdapter extends RecyclerView.Adapter<RV_InboxAdapter.ViewHo
         // Inflate the item layout XML and create a ViewHolder
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.inbox_carditem, parent, false);
         return new ViewHolder(view);
+
+
     }
 
     @Override
@@ -57,12 +73,14 @@ public class RV_InboxAdapter extends RecyclerView.Adapter<RV_InboxAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return messageList.size();
+        return 10;
     }
 
     public void setOnClickListener(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
+
+
 
     public interface OnClickListener {
         void onClick(int position, messageModel message);
