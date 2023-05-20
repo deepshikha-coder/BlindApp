@@ -1,4 +1,4 @@
-package deepshikha.jangidyahoo.finalyearproject;
+package deepshikha.jangidyahoo.finalyearproject.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,16 +6,12 @@ import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Locale;
+
+import deepshikha.jangidyahoo.finalyearproject.R;
 
 public class AddNotesActivity extends AppCompatActivity implements TextToSpeech.OnInitListener{
 

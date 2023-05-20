@@ -1,10 +1,12 @@
-package deepshikha.jangidyahoo.finalyearproject;
+package deepshikha.jangidyahoo.finalyearproject.Adapter;
 
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import deepshikha.jangidyahoo.finalyearproject.R;
 
 public class NotesViewHolder extends RecyclerView.ViewHolder {
 

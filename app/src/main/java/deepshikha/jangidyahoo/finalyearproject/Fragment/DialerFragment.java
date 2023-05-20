@@ -203,10 +203,18 @@ public class DialerFragment extends Fragment implements TextToSpeech.OnInitListe
         requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                speakOut("Dialer number is erased");
-                phoneNumberEditText.setText("");
-                DialerOptionsCard.setVisibility(View.GONE);
-                dialerLinearLayout.setVisibility(View.VISIBLE);
+                if(DialerOptionsCard.getVisibility() == View.VISIBLE){
+                    speakOut("Dialer number is erased");
+                    phoneNumberEditText.setText("");
+                    DialerOptionsCard.setVisibility(View.GONE);
+                    dialerLinearLayout.setVisibility(View.VISIBLE);
+                }
+                else{
+                    Intent intent = new Intent(getContext(),MainActivity.class);
+                    startActivity(intent);
+                    speakOut("You are at home. press on the different sides of the screen to know details");
+                }
+
             }
         });
 

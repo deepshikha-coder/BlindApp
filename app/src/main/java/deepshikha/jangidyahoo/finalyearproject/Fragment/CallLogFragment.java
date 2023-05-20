@@ -10,6 +10,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import deepshikha.jangidyahoo.finalyearproject.Activity.MainActivity;
 import deepshikha.jangidyahoo.finalyearproject.Adapter.CallLogAdapter;
 import deepshikha.jangidyahoo.finalyearproject.Adapter.RV_InboxAdapter;
 import deepshikha.jangidyahoo.finalyearproject.R;
@@ -90,6 +92,17 @@ public class CallLogFragment extends Fragment implements TextToSpeech.OnInitList
                 }
             }
 
+        });
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+                    speakOut("You are at home. press on the different sides of the screen to know details");
+
+
+            }
         });
 
         retrieveCallLog();

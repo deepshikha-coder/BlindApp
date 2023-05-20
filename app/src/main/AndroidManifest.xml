@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-    <uses-permission android:name="android.permission.BATTERY_STATS" />
+
 
     <!--         added this for voice to speech-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -29,10 +29,10 @@
         android:theme="@style/Theme.FinalYearProject"
         tools:targetApi="31">
         <activity
-            android:name=".AddNotesActivity"
+            android:name=".Activity.AddNotesActivity"
             android:exported="false" />
         <activity
-            android:name=".Notes"
+            android:name=".Activity.Notes"
             android:exported="false" />
         <activity
             android:name=".Activity.Phone"
@@ -41,8 +41,7 @@
             android:name=".Activity.Messages"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:clearTaskOnLaunch="true"
+
             android:name=".Activity.MainActivity"
             android:clearTaskOnLaunch="true"
             android:exported="true"

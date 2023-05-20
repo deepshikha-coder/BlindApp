@@ -1,4 +1,4 @@
-package deepshikha.jangidyahoo.finalyearproject;
+package deepshikha.jangidyahoo.finalyearproject.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +18,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import deepshikha.jangidyahoo.finalyearproject.Adapter.NotesRecyclerViewAdapter;
+import deepshikha.jangidyahoo.finalyearproject.R;
 import deepshikha.jangidyahoo.finalyearproject.model.NotesRecyclerViewModel;
 
 public class Notes extends AppCompatActivity implements TextToSpeech.OnInitListener {

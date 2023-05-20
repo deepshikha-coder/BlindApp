@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import deepshikha.jangidyahoo.finalyearproject.NotesViewHolder;
 import deepshikha.jangidyahoo.finalyearproject.R;
 import deepshikha.jangidyahoo.finalyearproject.model.NotesRecyclerViewModel;
 
