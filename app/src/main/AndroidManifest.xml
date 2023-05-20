@@ -12,6 +12,12 @@
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+
+    <!--         added this for voice to speech-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -23,12 +29,20 @@
         android:theme="@style/Theme.FinalYearProject"
         tools:targetApi="31">
         <activity
+            android:name=".AddNotesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Notes"
+            android:exported="false" />
+        <activity
             android:name=".Activity.Phone"
             android:exported="false" />
         <activity
             android:name=".Activity.Messages"
             android:exported="false" />
         <activity
+            android:name=".MainActivity"
+            android:clearTaskOnLaunch="true"
             android:name=".Activity.MainActivity"
             android:clearTaskOnLaunch="true"
             android:exported="true"
@@ -49,6 +63,11 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+<!--         added this for voice to speech-->
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
     </application>
+
+
 
 </manifest>

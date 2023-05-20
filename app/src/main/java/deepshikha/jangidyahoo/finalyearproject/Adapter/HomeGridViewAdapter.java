@@ -24,6 +24,7 @@ public class HomeGridViewAdapter extends ArrayAdapter<HomeGridViewModel>{
     Context context;
 
 
+
     public HomeGridViewAdapter(@NonNull Context context, ArrayList<HomeGridViewModel> courseModelArrayList) {
         super(context, 0, courseModelArrayList);
         this.context = context;
