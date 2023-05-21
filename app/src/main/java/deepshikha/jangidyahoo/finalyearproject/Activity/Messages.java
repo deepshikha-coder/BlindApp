@@ -1,6 +1,7 @@
 package deepshikha.jangidyahoo.finalyearproject.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
@@ -29,11 +30,11 @@ public class Messages extends AppCompatActivity implements TextToSpeech.OnInitLi
 
         MessageTabLayout = findViewById(R.id.MessageTabLayout);
         MessageViewPager= findViewById(R.id.MessagesPager);
-
+        int tabTextColor = ContextCompat.getColor(this, R.color.PrimaryColor);
         MessageTabLayout.addTab(MessageTabLayout.newTab().setText("Inbox"));
         MessageTabLayout.addTab(MessageTabLayout.newTab().setText("Sent"));
         MessageTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        MessageTabLayout.setTabTextColors(Color.BLACK, Color.RED);
+        MessageTabLayout.setTabTextColors(Color.BLACK, tabTextColor);
 
         final MessageViewPagerAdapter adapter = new MessageViewPagerAdapter(this,getSupportFragmentManager(), MessageTabLayout.getTabCount());
         MessageViewPager.setAdapter(adapter);

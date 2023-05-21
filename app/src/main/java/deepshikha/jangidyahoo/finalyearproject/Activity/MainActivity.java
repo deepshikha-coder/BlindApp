@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             public void run() {
                 homeTextToSpeech.stop();
             }
-        }, 5700);
+        }, 5695);
 
         adapter.setOnClickListener(new HomeGridViewAdapter.OnClickListener() {
             @Override

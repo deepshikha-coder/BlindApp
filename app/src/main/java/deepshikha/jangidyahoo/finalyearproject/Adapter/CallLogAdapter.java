@@ -68,7 +68,7 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.CallLogV
 
     @Override
     public int getItemCount() {
-        return 10;
+        return callLogItems.size();
     }
 
     public void setOnClickListener(OnClickListener onClickListener) {

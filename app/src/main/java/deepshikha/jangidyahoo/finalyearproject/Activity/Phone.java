@@ -2,6 +2,7 @@ package deepshikha.jangidyahoo.finalyearproject.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
@@ -46,8 +47,10 @@ public class Phone extends AppCompatActivity implements TextToSpeech.OnInitListe
         PhoneTabLayout.addTab(PhoneTabLayout.newTab().setText("Phone"));
         PhoneTabLayout.addTab(PhoneTabLayout.newTab().setText("Call Log"));
         PhoneTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        PhoneTabLayout.setBackgroundColor(Color.GRAY);
-        PhoneTabLayout.setTabTextColors(Color.BLACK, Color.RED);
+        int tabTextColor = ContextCompat.getColor(this, R.color.PrimaryColor);
+        int tabBGColor = ContextCompat.getColor(this, R.color.DividerColor);
+        PhoneTabLayout.setBackgroundColor(tabBGColor);
+        PhoneTabLayout.setTabTextColors(Color.BLACK, tabTextColor);
 
         final PhoneViewPagerAdapter adapter = new PhoneViewPagerAdapter(this,getSupportFragmentManager(), PhoneTabLayout.getTabCount());
         PhoneViewPager.setAdapter(adapter);

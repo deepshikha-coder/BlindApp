@@ -1,6 +1,7 @@
 package deepshikha.jangidyahoo.finalyearproject.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +25,7 @@ public class ActivitySplash extends AppCompatActivity implements TextToSpeech.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -39,7 +40,7 @@ public class ActivitySplash extends AppCompatActivity implements TextToSpeech.On
                 startActivity(intent);
                 textToSpeech.stop();
             }
-        }, 5000);
+        }, 5500);
 
         textToSpeech = new TextToSpeech(ActivitySplash.this, this);
         AudioAttributes audioAttributes = new AudioAttributes.Builder()

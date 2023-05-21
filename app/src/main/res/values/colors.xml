@@ -8,13 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="RowColor">#bdfff6</color>
-    <color name="DarkPrimaryColor">#d32f2f</color>
-    <color name="LightPrimaryColor">#ffcdd2</color>
-    <color name="PrimaryColor">#f44336</color>
+    <color name="DarkPrimaryColor">#666633</color>
+    <color name="LightPrimaryColor">#cccc99</color>
+    <color name="PrimaryColor">#990033</color>
     <color name="TextIcon">#ffffff</color>
     <color name="AccentColor">#448aff</color>
     <color name="PrimaryText">#212121</color>
     <color name="SecondaryText">#757575</color>
-    <color name="DividerColor">#bdbdbd</color>
+    <color name="DividerColor">#83D5D2D2</color>
 
 </resources>
