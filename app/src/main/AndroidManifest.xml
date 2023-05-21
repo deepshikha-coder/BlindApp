@@ -15,6 +15,15 @@
         android:theme="@style/Theme.FinalYearProject"
         tools:targetApi="31">
         <activity
+            android:name=".ActivitySplash"
+            android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <activity
             android:name=".Phone"
             android:exported="false" />
         <activity
@@ -27,11 +36,7 @@
             android:launchMode="singleTask"
             android:stateNotNeeded="true"
             android:theme="@style/Theme.FinalYearProject">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <intent-filter>
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
