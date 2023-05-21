@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">finalYearProject</string>
+    <string name="app_name">VocalEyes</string>
     <string name="message_layout">Message Layout</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
