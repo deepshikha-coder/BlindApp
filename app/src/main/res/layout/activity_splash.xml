@@ -7,12 +7,12 @@
     android:layout_height="match_parent"
     android:gravity="center"
     tools:context=".Activity.ActivitySplash"
-    android:fitsSystemWindows="true"
     >
     <ImageView
         android:id="@+id/idIVLogo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/vocal_eyes"/>
+        android:src="@drawable/vocaleyes"
+        android:background="#333333"/>
 
 </LinearLayout>

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.Window;
 
 import java.util.Locale;
 
@@ -26,6 +27,7 @@ public class ActivitySplash extends AppCompatActivity implements TextToSpeech.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
