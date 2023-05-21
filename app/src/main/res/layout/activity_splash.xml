@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:gravity="center"
-    tools:context=".ActivitySplash">
+    tools:context=".Activity.ActivitySplash">
     <ImageView
         android:id="@+id/idIVLogo"
         android:layout_width="match_parent"

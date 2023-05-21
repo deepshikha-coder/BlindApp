@@ -40,7 +40,7 @@ public class SentMessagesFragment extends Fragment implements TextToSpeech.OnIni
     private static final int REQUEST_CODE_SMS_PERMISSION = 323;
     TextToSpeech textToSpeech;
     AudioManager audioManager;
-    private int previousClickPosition;
+    private int previousClickPosition = -1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

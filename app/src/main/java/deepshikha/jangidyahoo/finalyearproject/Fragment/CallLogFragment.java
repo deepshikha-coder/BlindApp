@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -22,12 +23,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import deepshikha.jangidyahoo.finalyearproject.Activity.MainActivity;
 import deepshikha.jangidyahoo.finalyearproject.Adapter.CallLogAdapter;
@@ -38,12 +41,12 @@ import deepshikha.jangidyahoo.finalyearproject.model.messageModel;
 
 public class CallLogFragment extends Fragment implements TextToSpeech.OnInitListener {
     private List<CallLogItem> CallList;
-    private RecyclerView recyclerView;
-    private CallLogAdapter adapter;
     TextToSpeech textToSpeech;
     AudioManager audioManager;
     private int previousClickPosition = -1;
-
+    ProgressBar progressBar;
+    CallLogAdapter adapter;
+    RecyclerView recyclerView;
     public void CallLogsFragment() {
         // Required empty public constructor
     }
@@ -52,16 +55,12 @@ public class CallLogFragment extends Fragment implements TextToSpeech.OnInitList
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_call_log, container, false);
 
+        progressBar = view.findViewById(R.id.progress_Bar);
         CallList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.RV_callLog);
-
-        // Set layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        progressBar.setVisibility(View.VISIBLE);
 
-        // Set adapter
-        adapter = new CallLogAdapter();
-        adapter.setCallLogItems(CallList);
-        recyclerView.setAdapter(adapter);
         textToSpeech = new TextToSpeech(getContext(), this);
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
@@ -72,27 +71,7 @@ public class CallLogFragment extends Fragment implements TextToSpeech.OnInitList
         audioManager = (AudioManager)getContext().getSystemService(Context.AUDIO_SERVICE);
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
-        adapter.setOnClickListener(new CallLogAdapter.OnClickListener() {
-            @Override
-            public void onClick(int position, CallLogItem item) {
-                String dialerName;
-                if(item.getName() == "Unknown"){
-                    dialerName = item.getPhoneNumber();
-                }else{
-                    dialerName = item.getName();
-                }
-                if (previousClickPosition == position){
-                    String phoneNumber = item.getPhoneNumber();
-                    makePhoneCall(phoneNumber);
-                }else{
-                    textToSpeech.stop();
-                    String confirmationSpeech  = "Do you want to make call to " + dialerName + ". Click again to confirm" ;
-                    speakOut(confirmationSpeech);
-                    previousClickPosition = position;
-                }
-            }
 
-        });
         requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -105,36 +84,75 @@ public class CallLogFragment extends Fragment implements TextToSpeech.OnInitList
             }
         });
 
-        retrieveCallLog();
+        FetchCallLogsTask task = new FetchCallLogsTask();
+        task.execute();
         return view;
     }
-    private void retrieveCallLog() {
-        // Query the call log
 
-        Cursor cursor = getContext().getContentResolver().query(
-                CallLog.Calls.CONTENT_URI, null, null, null, null);
-        // Check if the cursor is not null and has data
+    private class FetchCallLogsTask extends AsyncTask<Void, Void, List<CallLogItem>> {
+        @Override
+        protected List<CallLogItem> doInBackground(Void... voids) {
+            // Perform the call log retrieval here
+            List<CallLogItem> logs = new ArrayList<>();
 
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                // Retrieve call log details
-                @SuppressLint("Range") String number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
-                @SuppressLint("Range") String type = cursor.getString(cursor.getColumnIndex(CallLog.Calls.TYPE));
-                @SuppressLint("Range") long dateMillis = cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE));
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-                String formattedDate = dateFormat.format(new Date(dateMillis));
-                String formattedTime = timeFormat.format(new Date(dateMillis));
-                String callerName = getCallerName(number);
-                String callType = getCallTypeString(Integer.parseInt(type));
-                CallLogItem item = new CallLogItem(callerName, callType,number, formattedDate, formattedTime);
+            Cursor cursor = getContext().getContentResolver().query(
+                    CallLog.Calls.CONTENT_URI, null, null, null, null);
+            // Check if the cursor is not null and has data
 
-                CallList.add(item);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    // Retrieve call log details
+                    @SuppressLint("Range") String number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
+                    @SuppressLint("Range") String type = cursor.getString(cursor.getColumnIndex(CallLog.Calls.TYPE));
+                    @SuppressLint("Range") long dateMillis = cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE));
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                    String formattedDate = dateFormat.format(new Date(dateMillis));
+                    String formattedTime = timeFormat.format(new Date(dateMillis));
+                    String callerName = getCallerName(number);
+                    String callType = getCallTypeString(Integer.parseInt(type));
+                    CallLogItem item = new CallLogItem(callerName, callType,number, formattedDate, formattedTime);
 
-                // displayCallDetails(callDetails);
+                    logs.add(item);
 
-            } while (cursor.moveToNext());
-            cursor.close();
+
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+            return logs;
+        }
+
+        @Override
+        protected void onPostExecute(List<CallLogItem> logs) {
+            super.onPostExecute(logs);
+            adapter = new CallLogAdapter();
+            recyclerView.setAdapter(adapter);
+            CallList.addAll(logs);
+            adapter.setCallLogItems(CallList);
+            adapter.setOnClickListener(new CallLogAdapter.OnClickListener() {
+                @Override
+                public void onClick(int position, CallLogItem item) {
+                    String dialerName;
+                    if(item.getName() == "Unknown"){
+                        dialerName = item.getPhoneNumber();
+                    }else{
+                        dialerName = item.getName();
+                    }
+                    if (previousClickPosition == position){
+                        String phoneNumber = item.getPhoneNumber();
+                        makePhoneCall(phoneNumber);
+                    }else{
+                        textToSpeech.stop();
+                        String confirmationSpeech  = "Do you want to make call to " + dialerName + ". Click again to confirm" ;
+                        speakOut(confirmationSpeech);
+                        previousClickPosition = position;
+                    }
+                }
+
+            });
+            adapter.notifyDataSetChanged();
+            progressBar.setVisibility(View.GONE);
         }
     }
     private String getCallTypeString(int callType) {
@@ -181,6 +199,7 @@ public class CallLogFragment extends Fragment implements TextToSpeech.OnInitList
     @Override
     public void onInit(int i) {
         int result = textToSpeech.setLanguage(Locale.getDefault());
+
         if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
             Log.e("MyAdapter", "Language not supported");
         } else {
@@ -190,4 +209,6 @@ public class CallLogFragment extends Fragment implements TextToSpeech.OnInitList
     private void speakOut(String text) {
         textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
+
+
 }

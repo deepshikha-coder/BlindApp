@@ -1,4 +1,4 @@
-package deepshikha.jangidyahoo.finalyearproject;
+package deepshikha.jangidyahoo.finalyearproject.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,8 @@ import android.util.Log;
 
 import java.util.Locale;
 
+import deepshikha.jangidyahoo.finalyearproject.R;
+
 public class ActivitySplash extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     TextToSpeech textToSpeech;
@@ -23,13 +25,21 @@ public class ActivitySplash extends AppCompatActivity implements TextToSpeech.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                speakOut("Welcome to vocal Eyes. 'Empowering Vision Through Voice.");  //speak after 1000ms
+            }
+        }, 1000);
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run(){
                 Intent intent= new Intent(ActivitySplash.this, MainActivity.class);
                 startActivity(intent);
+                textToSpeech.stop();
             }
-        }, 2000);
+        }, 5000);
 
         textToSpeech = new TextToSpeech(ActivitySplash.this, this);
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
@@ -47,8 +57,6 @@ public class ActivitySplash extends AppCompatActivity implements TextToSpeech.On
     @Override
     public void onInit(int status) {
         int result = textToSpeech.setLanguage(Locale.getDefault());
-        String introText = "Welcome to vocal Eyes. 'Empowering Vision Through Voice.'" ;
-        speakOut(introText);
         if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
             Log.e("MyAdapter", "Language not supported");
         } else {

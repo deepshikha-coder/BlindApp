@@ -14,6 +14,7 @@ import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.GridView;
@@ -26,7 +27,7 @@ import deepshikha.jangidyahoo.finalyearproject.R;
 import deepshikha.jangidyahoo.finalyearproject.model.HomeGridViewModel;
 
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener{
-    TextToSpeech textToSpeech;
+    TextToSpeech homeTextToSpeech;
     AudioManager audioManager;
     GridView homeGV;
     final int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -48,17 +49,31 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         ModelArrayList.add(new HomeGridViewModel("Battery", R.drawable.ic_baseline_battery_charging_full_24));
         HomeGridViewAdapter adapter = new HomeGridViewAdapter(this, ModelArrayList);
         homeGV.setAdapter(adapter);
-        textToSpeech = new TextToSpeech(MainActivity.this, this);
+        homeTextToSpeech = new TextToSpeech(MainActivity.this, this);
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
                 .setLegacyStreamType(AudioManager.STREAM_MUSIC)
                 .build();
-        textToSpeech.setAudioAttributes(audioAttributes);
+        homeTextToSpeech.setAudioAttributes(audioAttributes);
         audioManager = (AudioManager)this.getSystemService(Context.AUDIO_SERVICE);
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
 
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                speakOut("You are at home. Click on the different sides of screen to know details");  //speak after 1000ms
+            }
+        }, 1000);
+        final Handler handler2 = new Handler();
+        handler2.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                homeTextToSpeech.stop();
+            }
+        }, 5700);
 
         adapter.setOnClickListener(new HomeGridViewAdapter.OnClickListener() {
             @Override
@@ -66,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 String contentDescription = contentDesccription;
 
                 if (!previousCLick.equals(contentDescription)) {
-                    textToSpeech.stop();
+                    homeTextToSpeech.stop();
                     String textToSpeak = "You Clicked  " + contentDescription + "  Click again to confirm ";
                     speakOut(textToSpeak);
                     previousCLick = contentDescription;
@@ -101,9 +116,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     @Override
     public void onInit(int i) {
-        int result = textToSpeech.setLanguage(Locale.getDefault());
-        String introText = "Welcome to voice assistant app. Click on the different sides of screen to know details" ;
-        speakOut(introText);
+        int result = homeTextToSpeech.setLanguage(Locale.getDefault());
+
         if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
             Log.e("MyAdapter", "Language not supported");
         } else {
@@ -111,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
     public void speakOut(String text) {
-        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        homeTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 
     private void getBatteryInformation() {

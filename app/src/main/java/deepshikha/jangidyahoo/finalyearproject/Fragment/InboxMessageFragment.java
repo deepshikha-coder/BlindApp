@@ -44,7 +44,7 @@ public class InboxMessageFragment extends Fragment implements TextToSpeech.OnIni
     private List<messageModel> messageList;
     TextToSpeech textToSpeech;
     AudioManager audioManager;
-    private int previousClickPosition;
+    private int previousClickPosition = -1;
     private static final int REQUEST_CODE_SMS_PERMISSION = 323;
 
     @Override
@@ -53,7 +53,7 @@ public class InboxMessageFragment extends Fragment implements TextToSpeech.OnIni
         View view = inflater.inflate(R.layout.fragment_message_inbox, container, false);
 
         // Initialize the RecyclerView
-        recyclerView = view.findViewById(R.id.RV_Inbox);
+        recyclerView = view.findViewById(R.id.RV_inbox);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // Create and set the adapter

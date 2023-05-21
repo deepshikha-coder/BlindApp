@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.provider.CallLog;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -31,6 +33,7 @@ public class Phone extends AppCompatActivity implements TextToSpeech.OnInitListe
     AudioManager audioManager;
     TabLayout PhoneTabLayout;
     ViewPager PhoneViewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +41,7 @@ public class Phone extends AppCompatActivity implements TextToSpeech.OnInitListe
 
         PhoneTabLayout = findViewById(R.id.PhoneTabLayout);
         PhoneViewPager= findViewById(R.id.PhoneViewPager);
+
 
         PhoneTabLayout.addTab(PhoneTabLayout.newTab().setText("Phone"));
         PhoneTabLayout.addTab(PhoneTabLayout.newTab().setText("Call Log"));
@@ -49,6 +53,7 @@ public class Phone extends AppCompatActivity implements TextToSpeech.OnInitListe
         PhoneViewPager.setAdapter(adapter);
         PhoneViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(PhoneTabLayout));
 
+
         textToSpeech = new TextToSpeech(Phone.this, this);
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
@@ -59,6 +64,8 @@ public class Phone extends AppCompatActivity implements TextToSpeech.OnInitListe
         audioManager = (AudioManager)this.getSystemService(Context.AUDIO_SERVICE);
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
+
+
         PhoneTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -91,7 +98,7 @@ public class Phone extends AppCompatActivity implements TextToSpeech.OnInitListe
     @Override
     public void onInit(int i) {
         int result = textToSpeech.setLanguage(Locale.getDefault());
-
+        speakOut("Phone is fetching call log please wait. ");
         if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
             Log.e("MyAdapter", "Language not supported");
         } else {
